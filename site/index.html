@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operación Volantín</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: juguetón, cariñoso, de equipo; una invitación a juntarse antes del verano.
+   IDEA: el logo de Operación Infancia ya es un volantín: cada coordinador/a es un volantín en el cielo.
+   PICTURE: cielo azul petos OI con la cordillera; tu volantín sube más alto mientras más días marques.
+   COLOUR and TYPE: azul peto OI dominante, mostaza de apoyo, coral/frambuesa de acento; ciruela del logo. Poppins + Nunito.
+   LAYOUT: cielo a todo el ancho, luego "tu volantín" (nombre + color), calendario y panel; se apila bajo 900px. */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#0c1140);--ink:light-dark(#1d2366,#eef0ff);--soft:light-dark(#5d6394,#a9aee0);
+--blue:#2b35a8;--blue2:#3d49c4;--mus:#e6b54a;--coral:#f2706f;--plum:#8e5c8c;--pink:#fc3b68;--mag:#800061;
+--card:light-dark(#ffffff,#141b5a);--line:light-dark(#dfe2f5,#2a3278);--off:light-dark(#f1f2fa,#10164c);
+--tint:light-dark(#fff2f5,#3a1640);--soft2:light-dark(#f6f4fb,#1a2163)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Poppins,Nunito,sans-serif;margin:0;line-height:1.05;text-wrap:balance}
+.sky{position:relative;background:linear-gradient(#2b35a8,#4a56cf 85%);color:#fff;overflow:hidden}
+.skyhead{position:relative;z-index:2;padding:clamp(22px,4vw,44px) max(5vw,16px) 0;max-width:1240px;margin:auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:Poppins,sans-serif;font-weight:700;font-size:14px;color:var(--mus);margin-bottom:10px}
+.skyhead h1{font-size:clamp(34px,5.4vw,52px);color:#fff;font-weight:800}
+.skyhead p{margin:8px 0 0;max-width:60ch;font-weight:600;font-size:17px;color:#e8eaff}
+.count{display:inline-block;margin-top:12px;background:var(--mus);color:#1d2366;font-weight:800;border-radius:999px;padding:6px 14px;font-size:15px}
+.fig{position:relative;height:clamp(250px,36vw,350px)}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.kite{animation:sway 4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes sway{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+@media (prefers-reduced-motion:reduce){.kite{animation:none}}
+.setup{max-width:1240px;margin:auto;padding:clamp(20px,3vw,32px) max(5vw,16px) 0}
+.setbox{background:var(--soft2);border-radius:20px;padding:18px 20px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:20px;align-items:start}
+@media(max-width:800px){.setbox{grid-template-columns:minmax(0,1fr)}}
+.setbox h3{font-size:18px;margin-bottom:8px;color:var(--blue)}
+:root[data-theme=dark] .setbox h3{color:var(--mus)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .setbox h3{color:var(--mus)}}
+label{font-weight:800;font-size:14px;display:block;margin-bottom:6px}
+input[type=text]{width:100%;font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);min-height:44px}
+input[type=text]:focus-visible{outline:3px solid var(--mus);outline-offset:1px}
+input.need{border-color:var(--pink)}
+.colors{display:flex;flex-wrap:wrap;gap:6px}
+.colors button{width:54px;border-radius:12px;border:3px solid transparent;cursor:pointer;padding:4px 0 2px;background:none;color:var(--ink);font:inherit;font-size:13px;line-height:1.1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.colors button[aria-pressed=true]{border-color:var(--ink);background:var(--card)}
+.colors button:disabled{opacity:.35;cursor:not-allowed}
+.colors button:focus-visible{outline:3px solid var(--mus);outline-offset:2px}
+.colors small{font-size:13px;max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wrap{max-width:1240px;margin:auto;padding:clamp(20px,3vw,32px) max(5vw,16px) 48px;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)}}
+h2{font-size:26px;margin-bottom:6px;color:var(--blue)}
+:root[data-theme=dark] h2{color:#fff}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) h2{color:#fff}}
+.help{color:var(--soft);margin:0 0 14px}
+.status{font-size:14px;color:var(--soft);min-height:1.5em;margin:0 0 10px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dow{font-size:13px;font-weight:800;color:var(--soft);text-align:center;padding-bottom:2px}
+.day{position:relative;min-height:84px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:6px 7px;text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:transform .12s}
+.day:hover:not(:disabled){transform:translateY(-2px)}
+.day:focus-visible{outline:3px solid var(--mus);outline-offset:2px}
+.day .n{font-family:Poppins,sans-serif;font-weight:700;font-size:17px;line-height:1}
+.day .m{font-size:13px;color:var(--soft);font-weight:700}
+.day .tag{font-size:13px;font-weight:800;line-height:1.1}.day .ts{display:none}.day{overflow:hidden}
+.day .dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:auto}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.dot.q{background:transparent!important;border:2px solid currentColor}
+.more{font-size:13px;font-weight:800;color:var(--soft)}
+.day.si{border-color:var(--pink);background:var(--tint)}
+.day.q{border-style:dashed;border-color:var(--pink)}
+.day .me{position:absolute;top:5px;right:6px;font-size:13px;font-weight:800;color:var(--pink)}
+.day:disabled{cursor:default;background:var(--off);color:var(--soft);border-color:transparent}
+.day.xmas .tag{color:var(--pink)}
+.day.summer{background:var(--mus);color:#1d2366;border-color:var(--mus)}
+.day.summer .tag,.day.summer .m{color:#1d2366}
+.day.hot{box-shadow:0 0 0 3px var(--mus) inset}
+@media(max-width:600px){.day .tl{display:none}.day .ts{display:block}.day{min-height:66px;padding:4px 5px;border-radius:10px}.day .n{font-size:15px}.dot{width:8px;height:8px}.grid{gap:4px}}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:14px;color:var(--soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:18px;height:18px;border-radius:6px;border:2px solid var(--pink);display:inline-block}
+.sw.q{border-style:dashed}.sw.h{border:0;box-shadow:0 0 0 3px var(--mus) inset}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:18px}
+.card h3{font-size:19px;margin-bottom:10px}
+.best{display:grid;gap:12px}
+.pick{border-radius:14px;padding:12px 14px;background:var(--soft2);border-left:6px solid var(--coral)}
+.pick:nth-child(2){border-left-color:var(--mus)}
+.pick b{font-family:Poppins,sans-serif;font-size:21px;font-weight:700;display:block;line-height:1.15}
+.pick small{display:block;color:var(--soft);font-size:13px;font-weight:800}
+.pick .who{font-size:14px;margin-top:4px}
+.people{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.people li{display:flex;align-items:center;gap:10px;font-size:15px}
+.people li .c{margin-left:auto;color:var(--soft);font-size:14px;white-space:nowrap}
+.empty{color:var(--soft);font-size:15px;margin:0}
+.claim{margin-top:10px;font-size:14px;color:var(--soft)}
+.claim p{margin:0 0 6px}
+.claim button{font:inherit;font-size:14px;font-weight:800;min-height:36px;padding:4px 12px;margin:0 6px 6px 0;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.claim button:focus-visible{outline:3px solid var(--mus);outline-offset:2px}
+</style>
+</head>
+<body>
+<header class="sky">
+  <div class="skyhead">
+    <div class="brand"><svg width="22" height="28" viewBox="-16 -14 32 40" aria-hidden="true"><path d="M0-13L-15 0H0Z" fill="#8e5c8c"/><path d="M0-13L15 0H0Z" fill="#f2706f"/><path d="M-15 0H0V25Z" fill="#e6b54a"/></svg>Operación Infancia · Coordinación</div>
+    <h1>Operación Volantín</h1>
+    <p>Que no se nos corte el hilo antes del verano. Ponte nombre, elige tu color y marca los días en que puedes juntarte a trabajar: mientras más días marques, más alto vuela tu volantín.</p>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="fig"><svg id="skysvg" role="img" aria-label="Cielo con un volantín por cada persona que votó"></svg></div>
+</header>
+
+<section class="setup">
+  <div class="setbox">
+    <div>
+      <h3>1. ¿Quién eres?</h3>
+      <label for="name">Tu nombre (así te verán los demás)</label>
+      <input type="text" id="name" maxlength="24" placeholder="Ej: Holzi" autocomplete="nickname">
+      <div id="claim" class="claim"></div>
+    </div>
+    <div>
+      <h3>2. Elige tu volantín</h3>
+      <div class="colors" id="colors" role="group" aria-label="Color de tu volantín"></div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <section>
+    <h2>3. ¿Qué días puedes?</h2>
+    <p class="help">Toca un día: una vez = <b>puedo</b>, dos veces = <b>quizás</b>, tres = borrar. La meta: al menos una gran sesión de cowork antes de Navidad y otra (o un par) en la recta final antes de la salida del 9 de enero.</p>
+    <p class="status" id="status" aria-live="polite">Conectando con el viento…</p>
+    <div class="grid" id="grid"></div>
+    <div class="legend">
+      <span><i class="sw"></i> Tú puedes</span>
+      <span><i class="sw q"></i> Tú: quizás</span>
+      <span><i class="sw h"></i> Día con más viento</span>
+      <span><i class="dot" style="background:var(--coral)"></i> Alguien puede</span>
+      <span><i class="dot q" style="color:var(--coral)"></i> Alguien: quizás</span>
+    </div>
+  </section>
+
+  <aside>
+    <div class="card">
+      <h3>Así va el viento</h3>
+      <div class="best" id="best"></div>
+    </div>
+    <div class="card">
+      <h3>En el cielo</h3>
+      <ul class="people" id="people"></ul>
+    </div>
+  </aside>
+</main>
+
+<script>
+{
+const API='/api/votos';
+const COLORS=[['Coral','#f2706f'],['Mostaza','#e6b54a'],['Ciruela','#9a5f98'],['Frambuesa','#fc3b68'],['Turquesa','#20b2aa'],['Lima','#8cc63f'],['Naranja','#f58a2e'],['Celeste','#5bc0eb'],['Lavanda','#b9a2f0'],['Chicle','#f7a8c4']];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const DOW=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+const FERIADOS={'2026-12-25':'Navidad','2027-01-01':'Año Nuevo'};
+const TAGS={'2026-12-08':'Feriado'};
+const SUMMER='2027-01-09';
+const SHORT={'Feriado':'Fer.','Navidad':'Nav.','Año Nuevo':'A. N.','¡Verano!':'Ver.','Verano':'Ver.'};
+const todayKey=key(new Date());
+
+const days=[];
+for(let d=new Date(2026,10,30);d<=new Date(2027,0,10);d.setDate(d.getDate()+1)){
+  const k=key(d),dw=(d.getDay()+6)%7;
+  days.push({k,n:d.getDate(),m:d.getMonth(),dw,summer:k>=SUMMER,fer:FERIADOS[k],past:k<todayKey});
+}
+const votable=d=>!d.summer&&!d.fer&&!d.past;
+const fmt=k=>{const d=days.find(x=>x.k===k);return d?DOW[d.dw]+' '+d.n+' '+MES[d.m]:k};
+
+// Identity: a random id remembered by this browser (no login)
+const rand=()=>Array.from(crypto.getRandomValues(new Uint8Array(10)),b=>b.toString(16).padStart(2,'0')).join('');
+function loadId(){try{let v=localStorage.getItem('volantin-id');if(!v||!/^[a-f0-9]{8,40}$/.test(v)){v=rand();localStorage.setItem('volantin-id',v)}return v}catch(e){return rand()}}
+function storeId(v){try{localStorage.setItem('volantin-id',v)}catch(e){}}
+let myId=loadId();
+
+let votes={},mine={d:{},c:null,n:''},loaded=false,saveT=null,pending=false,online=true;
+const $=id=>document.getElementById(id);
+const status=t=>{$('status').textContent=t};
+
+function clean(raw){
+  const d={};const src=raw&&typeof raw.d==='object'&&raw.d?raw.d:{};
+  for(const k of Object.keys(src)){if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&(src[k]==='si'||src[k]==='q'))d[k]=src[k]}
+  const c=Number.isInteger(raw?.c)&&raw.c>=0&&raw.c<COLORS.length?raw.c:null;
+  const n=typeof raw?.n==='string'?raw.n.trim().slice(0,24):'';
+  return {d,c,n};
+}
+function all(){const o={...votes};o[myId]=mine;return o}
+function hashIdx(id){let h=0;for(const ch of String(id))h=(h*31+ch.charCodeAt(0))>>>0;return h%COLORS.length}
+function takenBy(){const t={};for(const [id,v] of Object.entries(votes))if(v.c!=null&&t[v.c]==null)t[v.c]=id;return t}
+const colorIdx=id=>{const v=id===myId?mine:votes[id];return v&&v.c!=null?v.c:hashIdx(id)};
+const colorOf=id=>COLORS[colorIdx(id)][1];
+function nameOf(id){const v=id===myId?mine:votes[id];return (v&&v.n)||(id===myId?'Tú (sin nombre)':'Sin nombre')}
+const first=s=>s.split(/\s+/)[0];
+function tally(k){const s=[],q=[];for(const [id,v] of Object.entries(all())){if(v.d[k]==='si')s.push(id);else if(v.d[k]==='q')q.push(id)}return {s,q,score:s.length+q.length*.5}}
+const countSi=v=>Object.values(v.d).filter(x=>x==='si').length;
+const countQ=v=>Object.values(v.d).filter(x=>x==='q').length;
+const hasDays=v=>Object.keys(v.d).length>0;
+const voters=()=>{const a=all();return Object.keys(a).filter(i=>hasDays(a[i])||(i===myId&&mine.n))};
+
+function shade(hex,amt){const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;const f=amt<0?0:255,t=Math.abs(amt);r=Math.round(r+(f-r)*t);g=Math.round(g+(f-g)*t);b=Math.round(b+(f-b)*t);return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1)}
+function kite(col){return `<path d="M0-22L-16-4H0Z" fill="${shade(col,-.25)}"/><path d="M0-22L16-4H0Z" fill="${col}"/><path d="M-16-4H0V26Z" fill="${shade(col,.3)}"/><path d="M16-4H0V26Z" fill="${shade(col,-.1)}"/>`}
+
+function renderGrid(){
+  const scores=days.filter(votable).map(d=>tally(d.k).score);const top=Math.max(0,...scores);
+  let h=DOW.map(x=>`<div class="dow">${x}</div>`).join('');
+  h+=days.map(d=>{
+    const t=tally(d.k),me=mine.d[d.k];
+    const cls=['day'];if(d.summer)cls.push('summer');if(d.k==='2026-12-25')cls.push('xmas');
+    if(me==='si')cls.push('si');if(me==='q')cls.push('q');
+    if(votable(d)&&top>0&&t.score===top)cls.push('hot');
+    const m=(d.n===1||d.k==='2026-11-30')?` <span class="m">${MES[d.m]}</span>`:'';
+    let tag='';if(d.summer)tag=d.k===SUMMER?'¡Verano!':'Verano';else if(d.fer)tag=d.fer;else if(TAGS[d.k])tag=TAGS[d.k];
+    const ids=[...t.s.map(i=>[i,'']),...t.q.map(i=>[i,' q'])];
+    const dots=ids.slice(0,10).map(([i,q])=>`<i class="dot${q}" style="background:${colorOf(i)};color:${colorOf(i)}" title="${esc(nameOf(i))}${q?' (quizás)':''}"></i>`).join('')+(ids.length>10?`<span class="more">+${ids.length-10}</span>`:'');
+    const lbl=`${fmt(d.k)}${tag?', '+tag:''}. ${t.s.length} pueden, ${t.q.length} quizás.${me?(me==='si'?' Tú puedes.':' Tú: quizás.'):''}`;
+    return `<button class="${cls.join(' ')}" data-k="${d.k}" ${votable(d)?'':'disabled'} aria-label="${esc(lbl)}"><span class="n">${d.n}${m}</span>${tag?`<span class="tag tl">${tag}</span><span class="tag ts">${SHORT[tag]||tag}</span>`:''}${me?`<span class="me">${me==='si'?'sí':'?'}</span>`:''}<span class="dots">${dots}</span></button>`;
+  }).join('');
+  $('grid').innerHTML=h;
+}
+function bestIn(from,to){
+  let best=null;
+  for(const d of days){if(!votable(d)||d.k<from||d.k>to)continue;const t=tally(d.k);if(t.score>0&&(!best||t.score>best.t.score))best={d,t}}
+  return best;
+}
+function renderBest(){
+  const blocks=[['Antes de Navidad','2026-11-30','2026-12-23'],['Recta final antes de la salida','2026-12-26','2027-01-08']];
+  $('best').innerHTML=blocks.map(([lab,a,b])=>{
+    const x=bestIn(a,b);
+    if(!x)return `<div class="pick"><small>${lab}</small><b>Sin viento todavía</b><div class="who">Marca tus días y aparece el mejor candidato.</div></div>`;
+    const who=[...x.t.s.map(nameOf),...x.t.q.map(i=>nameOf(i)+' (quizás)')].map(esc).join(', ');
+    return `<div class="pick"><small>${lab}</small><b>${fmt(x.d.k)}</b><div class="who">${x.t.s.length} ${x.t.s.length===1?'puede':'pueden'}${x.t.q.length?` · ${x.t.q.length} quizás`:''}: ${who}</div></div>`;
+  }).join('');
+}
+function renderPeople(){
+  const a=all();const ids=voters();
+  ids.sort((x,y)=>countSi(a[y])-countSi(a[x]));
+  $('people').innerHTML=ids.length?ids.map(i=>`<li><svg width="22" height="28" viewBox="-17 -23 34 50" aria-hidden="true">${kite(colorOf(i))}</svg><span>${esc(nameOf(i))}</span><span class="c">${countSi(a[i])} sí · ${countQ(a[i])} quizás</span></li>`).join(''):'<p class="empty">Nadie ha votado aún. Sé el primer volantín.</p>';
+  const n=ids.filter(i=>hasDays(a[i])).length;
+  const left=Math.max(0,Math.round((new Date(2027,0,9)-new Date(new Date().toDateString()))/864e5));
+  $('count').textContent=`${n} de 10 volantines en el cielo · faltan ${left} días para el verano`;
+}
+function renderColors(){
+  const taken=takenBy();const cur=colorIdx(myId);
+  $('colors').innerHTML=COLORS.map(([nm,c],i)=>{
+    const owner=taken[i]!=null&&taken[i]!==myId?taken[i]:null;
+    const lab=owner?first(nameOf(owner)):nm;
+    return `<button data-c="${i}" aria-pressed="${i===cur}" aria-label="${esc(nm+(owner?', lo tiene '+nameOf(owner):''))}" ${owner?'disabled':''}><svg width="34" height="40" viewBox="-17 -23 34 50" aria-hidden="true">${kite(c)}</svg><small>${esc(lab)}</small></button>`;
+  }).join('');
+  if(document.activeElement!==$('name'))$('name').value=mine.n||'';
+}
+function renderClaim(){
+  const others=Object.keys(votes).filter(i=>votes[i].n&&hasDays(votes[i]));
+  if(hasDays(mine)||!others.length){$('claim').innerHTML='';return}
+  $('claim').innerHTML='<p>¿Ya votaste desde otro computador o celular? Toca tu nombre para seguir con tu volantín:</p>'+
+    others.map(i=>`<button data-id="${esc(i)}"><svg width="14" height="18" viewBox="-17 -23 34 50" aria-hidden="true">${kite(colorOf(i))}</svg>${esc(votes[i].n)}</button>`).join('');
+}
+
+const svg=$('skysvg');
+function drawSky(){
+  const W=svg.clientWidth,H=svg.clientHeight;if(!W||!H)return;
+  const a=all();const ids=voters();
+  const ground=H-46;
+  let s=`<circle cx="${W-70}" cy="46" r="28" fill="#e6b54a"/><circle cx="${W-70}" cy="46" r="40" fill="#e6b54a" opacity=".18"/>`;
+  const cloud=(x,y,k)=>`<g fill="#fff" opacity=".16" transform="translate(${x} ${y}) scale(${k})"><ellipse cx="0" cy="0" rx="34" ry="14"/><ellipse cx="-16" cy="-8" rx="18" ry="14"/><ellipse cx="12" cy="-12" rx="20" ry="16"/></g>`;
+  s+=cloud(W*.18,H*.2,1)+cloud(W*.6,H*.12,.8)+cloud(W*.86,H*.5,.7);
+  const pk=[[0,.62],[.1,.38],[.2,.55],[.32,.3],[.45,.52],[.58,.28],[.7,.5],[.82,.34],[.93,.52],[1,.42]];
+  s+=`<path d="M0 ${H} ${pk.map(([x,y])=>`L${x*W} ${ground-(ground*.42)*(1-y)}`).join(' ')} L${W} ${H}Z" fill="#232c8f"/>`;
+  s+=pk.filter(([,y])=>y<.4).map(([x,y])=>{const py=ground-(ground*.42)*(1-y);return `<path d="M${x*W-18} ${py+16} L${x*W} ${py} L${x*W+18} ${py+16} L${x*W+8} ${py+12} L${x*W} ${py+18} L${x*W-8} ${py+12}Z" fill="#fff" opacity=".85"/>`}).join('');
+  s+=`<path d="M0 ${ground+10} Q ${W*.3} ${ground-14} ${W*.6} ${ground+8} T ${W} ${ground} V ${H} H 0Z" fill="#1b2373"/>`;
+  const list=ids.length?ids:[null];
+  const maxSi=Math.max(6,...ids.map(i=>countSi(a[i])));
+  const k=W<520?.75:1, showLbl=W/(list.length+1)>=64;
+  list.forEach((id,j)=>{
+    const x=W*(j+1)/(list.length+1);
+    const si=id?countSi(a[id]):0;
+    const y=id?ground-70-(ground-140)*(si/maxSi):ground-60;
+    const col=id?colorOf(id):'#ffffff';
+    const hx=x+(j%2?24:-24);
+    s+=`<path d="M${hx} ${H} Q ${(x+hx)/2+18} ${(y+H)/2} ${x} ${y+26*k}" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2"/>`;
+    s+=`<g transform="translate(${x} ${y}) scale(${k})" ${id?'':'opacity=".45"'}><g class="kite" style="animation-delay:${-j*.7}s">`+
+      `<path d="M0 26 q 8 14 0 28 q -8 14 0 28" fill="none" stroke="${col}" stroke-width="2"/>`+
+      `<path d="M-5 44l10-6v12zM-5 68l10-6v12z" fill="${col}"/>`+kite(col)+
+      (id?`<title>${esc(nameOf(id))}: ${si} días</title>`:'<title>Aquí aparecerá el primer volantín</title>')+`</g></g>`;
+    if(id&&showLbl)s+=`<text x="${x}" y="${y-30*k}" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="13" fill="#fff">${esc(first(nameOf(id)))}</text>`;
+  });
+  svg.innerHTML=s;
+}
+const skyRO=new ResizeObserver(drawSky);skyRO.observe(svg);
+
+function render(){renderGrid();renderBest();renderPeople();renderColors();renderClaim();drawSky()}
+
+// ---- Server ----
+async function load(){
+  try{
+    const r=await fetch(API,{cache:'no-store'});if(!r.ok)throw new Error(r.status);
+    const rows=await r.json();const next={};
+    for(const row of Array.isArray(rows)?rows:[]){
+      if(!row||typeof row.id!=='string')continue;
+      const v=clean(row);
+      if(row.id===myId){if(!pending)mine=v}else next[row.id]=v;
+    }
+    votes=next;
+    if(!loaded){loaded=true;status(mine.n?'Listo. Marca tus días.':'Empieza escribiendo tu nombre.')}
+    else if(!online)status('Conectado de nuevo.');
+    online=true;render();
+  }catch(e){online=false;status(loaded?'Sin conexión: reintentando…':'No pudimos cargar los votos. Revisa tu conexión y recarga.')}
+}
+function save(){
+  pending=true;clearTimeout(saveT);status('Guardando…');
+  saveT=setTimeout(async()=>{
+    try{
+      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:myId,n:mine.n,c:mine.c,d:mine.d})});
+      if(!r.ok)throw new Error(r.status);
+      pending=false;status('Guardado. Tu volantín ya está en el cielo.');
+    }catch(e){status('No se pudo guardar. Revisa tu conexión: reintentamos al próximo cambio.')}
+  },600);
+}
+function needName(){
+  if(mine.n)return false;
+  $('name').classList.add('need');$('name').focus();
+  status('Primero escribe tu nombre arriba, para que sepamos quién es quién.');
+  return true;
+}
+function autoColor(){
+  if(mine.c!=null)return;const t=takenBy();const h=hashIdx(myId);
+  for(let i=0;i<COLORS.length;i++){const c=(h+i)%COLORS.length;if(t[c]==null){mine.c=c;return}}
+}
+
+$('grid').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-k]');if(!b||b.disabled)return;
+  if(needName())return;
+  const k=b.dataset.k,cur=mine.d[k];
+  if(!cur)mine.d[k]='si';else if(cur==='si')mine.d[k]='q';else delete mine.d[k];
+  render();save();
+  const nb=$('grid').querySelector(`[data-k="${k}"]`);if(nb)nb.focus();
+});
+$('colors').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-c]');if(!b||b.disabled)return;
+  mine.c=+b.dataset.c;render();save();
+});
+$('name').addEventListener('input',e=>{
+  mine.n=e.target.value.trim().slice(0,24);
+  if(mine.n)e.target.classList.remove('need');
+  autoColor();
+  renderPeople();renderBest();renderColors();drawSky();save();
+});
+$('claim').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-id]');if(!b)return;
+  const id=b.dataset.id;if(!votes[id])return;
+  myId=id;storeId(id);mine=votes[id];delete votes[id];
+  status(`Listo, ${mine.n}: seguimos con tu volantín.`);render();
+});
+
+render();load();
+setInterval(()=>{if(!document.hidden)load()},15000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
+}
+</script>
+</body>
+</html>
