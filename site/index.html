@@ -193,7 +193,7 @@ function clean(raw){
 }
 function all(){const o={...votes};o[myId]=mine;return o}
 function hashIdx(id){let h=0;for(const ch of String(id))h=(h*31+ch.charCodeAt(0))>>>0;return h%COLORS.length}
-function takenBy(){const t={};for(const [id,v] of Object.entries(votes))if(v.c!=null&&t[v.c]==null)t[v.c]=id;return t}
+function takenBy(){const t={};for(const [id,v] of Object.entries(votes))if(v.c!=null&&v.n&&t[v.c]==null)t[v.c]=id;return t}
 const colorIdx=id=>{const v=id===myId?mine:votes[id];return v&&v.c!=null?v.c:hashIdx(id)};
 const colorOf=id=>COLORS[colorIdx(id)][1];
 function nameOf(id){const v=id===myId?mine:votes[id];return (v&&v.n)||(id===myId?'Tú (sin nombre)':'Sin nombre')}
@@ -343,6 +343,7 @@ $('grid').addEventListener('click',e=>{
 });
 $('colors').addEventListener('click',e=>{
   const b=e.target.closest('button[data-c]');if(!b||b.disabled)return;
+  if(needName())return;
   mine.c=+b.dataset.c;render();save();
 });
 $('name').addEventListener('input',e=>{
